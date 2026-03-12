@@ -1,4 +1,4 @@
-﻿#include <iostream>
+#include <iostream>
 #include <vector>
 #include <fstream>
 #include <chrono>
@@ -46,38 +46,67 @@ void verification() {
     system("py check.py");
 }
 
-void save_matrix(vector<vector<double>>& result) {
-    std::ofstream file("matrix_c++.txt");
+vector<vector<double>> generate_matrice(int size) {
+    vector<vector<double>> matrice(size, vector<double>(size));
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            matrice[i][j] = rand() / 100;
+        }
+    }
+    return matrice;
+}
+
+void save_matrix(vector<vector<vector<double>>>& result,string filename) {
+    std::ofstream file(filename);
 
     file << result.size()<<endl;
+    file << result[0].size() << endl;
 
-
-    for (int i = 0; i < result.size(); i++) {
-        for (int j = 0; j < result.size(); j++) {
-            file << result[i][j];
-            if (j < result.size() - 1) file << " ";
+    for (int n = 0; n < result.size(); n++) {
+        for (int i = 0; i <result[n].size(); i++) {
+            for (int j = 0; j < result[n].size(); j++) {
+                file << result[n][i][j] << " ";
+            }
+            file << endl;
         }
         file << endl;
     }
-
+    file.close();
 }
 
 int main()
 {
-    cout << "Input file name for matrice 1:";
+    cout << "Code in C++" << endl;
+    cout << "Input a size for generating matrices:";
+    int size;
+    cin >> size;
+    cout << "Input file name for matrices group 1:";
     string filename_1;
     cin >> filename_1;
-    vector<vector<double>> matrice_1 = load_matrix_from_file(filename_1);
-    cout << "Input file name for matrice 2:";
+    cout << "Input file name for matrices group 2:";
     string filename_2;
     cin >> filename_2;
-    vector<vector<double>> matrice_2 = load_matrix_from_file(filename_2);
-    auto start = high_resolution_clock::now();
-    vector<vector<double>> result = multiply(matrice_1,matrice_2);
-    auto stop = high_resolution_clock::now();
-    auto duration = duration_cast<microseconds>(stop - start);
-    save_matrix(result);
-    cout << "Execution time: " << duration.count() << " microseconds" << endl;
-    cout << "Matrice size: " << result.size() << "x" << result.size() << endl;
+    vector<vector<vector<double>>> matrices_group_1;
+    for (int i = 0; i < 10; i++) {
+        matrices_group_1.push_back(generate_matrice(size));
+    }
+    save_matrix(matrices_group_1, filename_1);
+    vector<vector<vector<double>>> matrices_group_2;
+    for (int i = 0; i < 10; i++) {
+        matrices_group_2.push_back(generate_matrice(size));
+    }
+    save_matrix(matrices_group_2, filename_2);
+    vector<vector<vector<double>>> matrices_group_result;
+    for (int i = 0; i < matrices_group_1.size(); i++) {
+        auto start = high_resolution_clock::now();
+        vector<vector<double>> result = multiply(matrices_group_1[i], matrices_group_2[i]);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<microseconds>(stop - start);
+        cout << "Pair number " << i << endl;
+        cout << "Execution time: " << duration.count() << " microseconds" << endl;
+        matrices_group_result.push_back(result);
+    }
+    string filename_3 = "matrix_c++.txt";
+    save_matrix(matrices_group_result, filename_3);
     verification();
 }
