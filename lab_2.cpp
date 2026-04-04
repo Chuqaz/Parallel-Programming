@@ -16,7 +16,7 @@ vector<vector<double>> multiply(vector<vector<double>>& a, vector<vector<double>
 #pragma omp parallel for collapse(2)
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                double sum = 0.0;  // Локальная переменная для каждого потока
+                double sum = 0.0;
                 for (int k = 0; k < size; k++) {
                     sum += a[i][k] * b[k][j];
                 }
