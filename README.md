@@ -1,1 +1,1 @@
-# Parallel-Programming
+## Результаты
