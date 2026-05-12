@@ -1,0 +1,12 @@
+Running program with size = 200
+Execution time(microseconds): 0.0596404
+Running program with size = 400
+Execution time(microseconds): 0.339705
+Running program with size = 800
+Execution time(microseconds): 2.22645
+Running program with size = 1200
+Execution time(microseconds): 7.46318
+Running program with size = 1600
+Execution time(microseconds): 20.5745
+Running program with size = 2000
+Execution time(microseconds): 33.2044
